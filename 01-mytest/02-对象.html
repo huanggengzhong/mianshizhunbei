@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // 创建一个对象,里面包含:小明,18岁,sayHi函数
+    // 方法一:字面量
+    // var person = {
+    //     name: "小明",
+    //     age: 18,
+    //     sayHi: function () {
+    //         console.log("hi");
+    //     }
+    // }
+    // console.log(person);
+    // new Object()方法
+    // var person =new Object();
+    // person.name="小明";
+    // person.age=18;
+    // person.sayHi=function(){
+    //     console.log("hi");
+
+    // }
+    // console.log(person);
+
+    //工厂函数方法:
+    // function createPerson(name,age,logData){
+    //     var person =new Object();
+    //     person.name=name;
+    //     person.age=age;
+    //     person.sayHi=function(){
+    //         console.log(logData);
+
+    //     }
+    //     return person;
+    // }
+    // var person=createPerson('小明',18,"hi")
+    // console.log(person);
+
+    // 构造函数方法:
+    // function Person(name,age,logData){
+
+    //     this.name=name;
+    //     this.age=age;
+    //     this.sayHi=function(){
+    //         console.log(logData);  
+    //     }
+    //     // console.log(this);//this是对象本身
+
+    // }
+    // var person1=new Person('小明',18,"hi")//如果少写new,this是window,所有值会添加到window对象里,person是undefined
+    // var person2=new Person('小明',19,"hi")//如果少写new,this是window,所有值会添加到window对象里,person是undefined
+    // // console.log(person);
+
+    // console.log(person1.__proto__==Person.prototype);
+    // console.log(person2.constructor==Person);
+
+    // 创建一个对象,里面包含:小明,18岁,sayHi函数
+
+    // function createPerson(name,age,fnData){
+    //     var person=new Object();
+    //     person.name=name;
+    //     person.age=age;
+    //     person.sayHi=function(){
+    //         console.log(fnData);
+
+    //     }
+    //     return person;
+
+    // }
+
+    // var p=createPerson('小明',18,"hi")
+    // console.log(p);
+
+    // 原型链方法
+
+    // function Person() {}
+    // Person.prototype.name = "小明";
+    // Person.prototype.age = 18;
+    // Person.prototype.sayHi = function () {
+    //     console.log("hi");
+
+    // }
+    // var person = new Person();
+    // console.log(person);//它会从原型里找到
+
+    // 组合使用构造函数和原型方法(实际就是一部分写在构造函数里,一部分写在原型里)
+    // function Person(name) {
+    //     this.name = name;
+    // }
+    // Person.prototype = {
+    //     constructor: Person, //这里不写也不会受影响
+    //     age: 18,
+    //     sayHi: function () {
+    //         console.log("hi");
+    //     }
+    // }
+    // var person = new Person("小明")
+    // console.log(person);
+
+    // 动态原型方法:实际构造函数里面加了一个方法判断,判断方法不存在的情况下才加方法
+    // var fn=function(){}
+    // console.log(typeof fn);//function
+
+    // function Person(name,age,fnData){
+    //     this.name=name;
+    //     this.age=age;
+    //     if(typeof this.sayHi !='function'){
+    //         Person.prototype.sayHi=function(){
+    //             console.log(fnData);
+    //         }
+    //     }
+    // }
+    // var person=new Person('小明',18,"hi");
+    // console.log(person);
+    
+    // 稳妥的构造函数方法
+    function Person(name,age,fnData) {
+        var person =new Object()
+        person.sayHi=function(){
+            console.log(fnData);
+        }
+        return person
+    }
+    var person=Person("小明",18,"hi")
+    console.log(person.sayHi());//用哪个值构造函数只写哪个,让不用的属性无法访问
+    
+</script>

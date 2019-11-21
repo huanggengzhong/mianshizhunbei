@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+// var s=Symbol();//不需要new,它是一种类似于字符串的数据类型
+// Symbol函数可以接受一个字符串作为参数,如果不加参数，它们在控制台的输出都是Symbol()，不利于区分。有了参数以后，就等于为它们加上了描述，输出的时候就能够分清，到底是哪一个值。
+// var s=Symbol("小明");
+// console.log( s.toString());
+
+// 
+// var obj={
+//     toString(){
+//         return "abc"
+//     }
+// }
+// var s=Symbol(obj)
+// console.log(s);
+
+// 注意，Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
+// var s1=Symbol()
+// var s2=Symbol()
+// var s1=Symbol('abc')
+// var s2=Symbol('abc')
+
+// console.log(s1==s2);
+// console.log(String(s1));
+//es9出了一个直接读取描述的description属性
+// console.log(s1.description);//直接得到abc
+
+
+// 使用:作为唯一的对象名
+// console.log(s1);
+let mySymbol=Symbol();
+// 第一种写法:
+// let a={};
+// a[mySymbol]="hello"//属性名起名为Symbol类型的Symbol名,这样能保证唯一性,属性值为hello
+// console.log(a);
+
+// 第二种写法
+// let a={
+//     [mySymbol]:'hello'
+// }
+
+// console.log(a);
+
+// 第三种写法
+let a ={};
+
+Object.defineProperty(a,mySymbol,{value:"hello"})
+
+console.log(a);//
+
+
+
+
+
+
+</script>

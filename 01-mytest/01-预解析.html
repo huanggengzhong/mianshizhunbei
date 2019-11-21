@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+// var a;
+// function abc (){
+//   var a;
+//   alert(a);//undefined
+//   a = 10;
+// }
+// function a() {
+//   console.log('aaaaa');//没有调用不会打印
+// }
+// a = 25;
+// abc();
+// console.log(a);//25
+// a = 1;
+// console.log(a);//1
+
+
+    // 预解析:
+//     var a;
+// a = 25;
+// function abc (){
+//     var a;
+//   alert(a);//undefined
+//    a = 10;
+// }
+// function a() {
+//   console.log('aaaaa');//没有调用,不会打印
+// }
+// abc();
+
+// console.log(a);//打印开头的25
+
+// a = 1;
+// console.log(a);//打印重新赋值的1
+
+// var num = 10;
+// fun();
+// function fun() {
+//   console.log(num);
+//   var num = 20;
+// }
+// // 预解析后:
+// var num ;
+// function fun() {
+//   var num;
+//   console.log(num);//undefined
+//   num = 20;
+// }
+// num= 10;
+// fun();
+
+// var a = 18;
+// f1();
+// function f1() {
+//   var b = 9;
+//   console.log(a);
+//   console.log(b);
+//   var a = '123';
+// }
+
+//预解析:
+// var a;
+// function f1() {
+//   var b;
+//   var a ;
+//   b = 9;
+//   console.log(a);//undefined
+//   console.log(b);//9
+//   a= '123';
+// }
+// a = 18;
+// f1();
+
+// f1();
+// console.log(c);
+// console.log(b);
+// console.log(a);
+// function f1() {
+//   var a = b = c = 9;
+//   console.log(a);
+//   console.log(b);
+//   console.log(c);
+// }
+//预解析
+function f1() {
+  //注意多个赋值拆解规律:变量声明第一,最后赋值第二,依次后往前的规律赋值
+var a;
+c=9;
+b=c;
+a=b;
+
+  console.log(a);//9
+  console.log(b);//9
+  console.log(c);//9
+}
+f1();
+console.log(c);//9
+console.log(b);//9
+console.log(a);//只有局部f1里才有,全局里没有,直接报错
+
+</script>
