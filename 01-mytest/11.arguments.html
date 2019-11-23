@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    /**arguments关键字作用：获取函数的所有实参
+     * 本质：当前函数的内置对象，每一个函数都有一个arguments对象，作用是存储调用者传递过来的所有实参
+     * 特点：1.只能在函数体中使用，函数外部使用会报错
+     *          2.是一个特殊的数组（伪数组）
+     *          3.arguments伪数组的元素与形参一一对应
+     *
+     * 说明：1.可以用函数变得更加灵活
+     *           2.arguments是一个伪数组
+     *              * 伪数组：只有数组的下标、元素、长度，没有数组其他方法
+     */
+    /**一：argument用法演示*/
+
+    //1.这行代码会报错，因为函数外部无法使用arguments
+    // console.log ( arguments );
+
+    //2.定义一个无参的函数，作用是打印该函数的所有参数
+    function fn ( num1 ) {
+        console.log ( num1 );//10
+        console.log ( arguments );//[10,20]arguments只能在函数内部使用
+        num1 = 100;
+        console.log ( arguments );//[100,20]修改了形参，arguments也会修改
+        //反之，修改了argeumnts，形参也会变化
+
+    }
+    fn(10,20);//实参与形参一一对应
+
+    /** 二：arguments实际用途展示：根据参数的数量让函数实现不同的功能 */
+    function test (  ) {
+        if(arguments.length == 0){
+            //实参为空执行这个代码
+            console.log ( "没有参数" );
+        }else if(arguments.length == 1){
+            //实参一个执行这个代码
+            console.log ( arguments[ 1 ] );
+        }else{
+            //实参两个执行这个代码
+            console.log ( arguments[ 0 ] + arguments[ 1 ] );
+        }
+    }
+
+    test();
+    test(100);
+    test(10,20);
+
+
+</script>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <body>
+        <div style="height: 2000px;background-color: aqua;"></div>
+    </body>
+</body>
+
+</html>
+<script>
+    // 防抖案例:在鼠标滚动事件中,不要让它一直发请求,而是设置一定的延迟,在延迟还在的时候,不执行任何操作,
+    window.onscroll = debounce(showTop,3000)//添加滚动
+
+    function debounce(fn, delay) {//准备好的防抖函数
+        let timer = null 
+        return function () {
+            if (timer) {
+                clearTimeout(timer)
+            }
+            timer = setTimeout(fn, delay) 
+        }
+    }
+    function showTop() {
+        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;　　
+        console.log('滚动条位置：' + scrollTop);
+    }
+</script>

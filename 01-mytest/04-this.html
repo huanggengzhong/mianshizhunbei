@@ -11,6 +11,71 @@
 </body>
 </html>
 <script>
-    console.log(window);
+/*     //1.普通函数中的this:指向window
+    function welcome(){
+        console.log(this);
+        
+    }
+    welcome();//window,相当于window.welcome();
+    
+    // ----------------------------------
+    // 2.对象方法中的this:对象点出来,指向这个对象
+    var obj={
+        name:"小明",
+        sayHi:function(){
+            console.log(this);
+            
+        }
+    }
+    obj.sayHi();//指向obj对象
+    // ----------------------------------
+    // 对象里的对象,最终谁点出来就是谁
+    var p1={
+        dog:{
+            name:'阿黄',
+            sayHi:function(){
+                console.log(this);
+            }
+        }
+    }
+    console.log(p1.dog.sayHi());//this是dog对象
+    // ----------------------------------
+
+    // 3.构造函数里的this,指向构造函数实例化的对象,这个对象值是已经添加对应的属性和值的对象
+    function Student(name,age) {
+        this.name=name;
+        console.log(this);
+        this.age=age;
+    }
+    var s=new Student('小明',18)//打印有小明的对象
+       
+        
+    // ---------------------------
+    // 构造函数忘记使用this的话,指向window
+    function Student(name,age) {
+        this.name=name;
+        console.log(this);//没有写new关键字,相当于给window添加属性和方法
+        this.age=age;
+    }
+    var s= Student('小明',18)//打印window */
+
+    // var obj ={
+    //     name:"小明"
+    // }
+    // function welcome() {
+    //     console.log(this);
+        
+    // }
+    // // welcome()//window
+    // welcome.call(obj);//执行函数调用,并改变函数的上下文
+
+    function Teacher(name,age){
+      this.name = name;
+      this.age = age;
+      console.log(this);//Teacher
+    }
+    //如果构造函数配合new关键字使用,那么构造函数中的this就是那个new关键字创建出来的对象.
+    var s1 = new Teacher('绿群',20);
+    console.log(s1);
     
 </script>

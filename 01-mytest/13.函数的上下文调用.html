@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // var obj = {
+    //     name: '棒棒'
+    // };
+
+    // // 下面我们统一通过call(),apply(),bind()这三个方法来修改this指向
+
+    // //1.call();
+    // // // 语法:函数名.call(修改后的this指向,参数1,参数2,...)
+    // // // 特点:会调用这个函数
+    // function getSum(a,b) {
+    //     console.log(a+b);
+    //     console.log(this);    
+    // }
+    // // getSum(1,2)//普通调用,this指向window
+    // getSum.call(obj,1,2)//this指向obj对象了
+
+    // // 2.apply();
+    // // 语法:函数名.apply(修改后的this指向,[参数1,参数2,...]),与call()不一样的是apply方法只能写两个参数,参数2是数组,里面可以写多个要传递的元素
+    // // 特点:会调用这个函数
+    //  function getSum(a,b) {
+    //     console.log(a+b);
+    //     console.log(this);    
+    // }
+    // // getSum(1,2)//普通调用,this指向window
+    // getSum.apply(obj,[1,2])//this改为了obj对象
+
+    // // 3.bind();
+    // // 语法:函数名.bind(新的this指向对象,参数1,参数2...)
+    // // 特点:最大特点不会执行,只是返回一个修改了this后的函数
+    // function getSum(a,b) {
+    //     console.log(a+b);
+    //     console.log(this);    
+    // }
+    // // getSum.bind(obj)//不会打印,代表不会调用
+    // var fn=getSum.bind(obj,1,1);
+    // // console.log(fn);//这里还是添加了默认参数的getSum函数
+    // fn()//这里调用,打印this是obj对象   
+
+    // call,apply,bind修改this指向注意点:直接传递修改this的对象为string,number,boolean,Symbol,那么this指向的是对应的String,Number,Boolean,Symbol对象.其它的还是window(知道即可)
+    function getSum() {
+        console.log(this);    
+    }
+    getSum.call("abc")//String{"abc"}
+    getSum.call(11)//Number{11}
+    getSum.call(true)//Boolean{true}
+    getSum.call(Symbol())//Symbol{Symbol()}
+    getSum.call(null)//window
+    getSum.call(undefined)//window
+    getSum.call()//window
+    getSum.call(undefined)//window
+    
+
+
+</script>
