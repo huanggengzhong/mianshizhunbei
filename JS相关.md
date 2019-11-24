@@ -7,6 +7,16 @@
 
 数据类型检测方法:
 
+
+
+typeof :除了null,其它都可以检查;
+
+A(对象) instanceof B(构造函数):判断这个构造函数的prototype属性, 在不在这个对象的原型链上.。如果在则返回true,否则返回false。比如:console.log([] instanceof Array);//true(检测方法不准确,因为[] instanceof  Object)也是true;
+
+万能检测数据类型:Object.prototype.toString.call(数据),比如:console.log(Object.prototype.toString.call(null)); //'[object Null]'
+
+数组单独的检测方法:console.log(Array.isArray([]))//true
+
 #### 二.预解析
 ##### 预解析的规律:
 1.把变量的声明提升到当前作用域的最前面,只会提升变量的声明,不会提升赋值;
@@ -368,7 +378,106 @@ d.最后,new会将有值的新对象进行返回;
 
 ![1574483334100](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1574483334100.png)
 
-#### 七.继承
+#### 七.继承的方式
+
+1.混入式继承:实际就是遍历父元素的对象,在对象的循环体里将父元素的值赋值给子类即可(sonObj[key]=fatherObj[key]).
+
+```js
+    // 混入式
+     var wangjianlin = {
+       house:{
+         price:10000000,
+         adress:'洛杉矶'
+       },
+       car:{
+         price:5000000,
+         brand:'劳斯莱斯幻影'
+       }
+     };
+     var wangsicong = {
+       grilFriends:['豆得儿','雪梨','张馨予','林更新','001号']
+     };
+     //wangsicong这个对象想拥有wangjianlin这个对象的车和房.继承
+     for(var key in wangjianlin){
+       wangsicong[key] = wangjianlin[key];
+     }
+     console.log(wangsicong);//这样就有了父类和自己的属性和方法
+```
+
+2.替换原型式继承:实际就是将父类的值赋值给子类构造函数的原型(即Son.prototype=fatherObj).
+
+```js
+    //替换原型的方式.
+   var wangjianlin = {
+     house:{
+       price:10000000,
+       adress:'洛杉矶'
+     },
+     car:{
+       price:5000000,
+       brand:'劳斯莱斯幻影'
+     }
+   };
+
+   //渣男构造构造
+   function ZhaNan(gfs){
+     this.gfs = gfs;
+   }
+   //每一个渣男都有一个骗女孩子的方法.
+   ZhaNan.prototype.huaQian = function () {
+     console.log("花钱请吃6块钱麻辣烫...");
+   }
+
+   //替换原型继承.(重点操作)
+   ZhaNan.prototype = wangjianlin;
+
+   //实例化一个渣男对象.
+   var wangsicong = new ZhaNan(['豆得儿','雪梨','张馨予','林更新','001号']);//给自己添加了gfs属性,值是这个数组
+   console.log(wangsicong);
+   console.log(wangsicong.car);//可以得到得到父对象里的car属性值
+
+```
+
+3.混合式继承:
+实际也是遍历父类对象,在循环体里用父类对象的值赋值给子类构造函数的原型里(即Son.prototype[key]=fatherObj[key]).
+
+```js
+    var wangjianlin = {
+      house:{
+        price:10000000,
+        adress:'洛杉矶'
+      },
+      car:{
+        price:5000000,
+        brand:'劳斯莱斯幻影'
+      }
+    };
+
+    //渣男构造构造
+    function ZhaNan(gfs){
+      this.gfs = gfs;
+    }
+    //每一个渣男都有一个骗女孩子的方法.
+    ZhaNan.prototype.huaQian = function () {
+      console.log("花钱请吃6块钱麻辣烫...");
+    }
+
+    //混合式继承.
+    //这里并没有替换原型,而是给原型增加了属性和方法.
+    for(var key in wangjianlin){
+      ZhaNan.prototype[key] = wangjianlin[key];
+    }
+
+    //实例化一个渣男对象.
+    var wangsicong = new ZhaNan(['豆得儿','雪梨','张馨予','林更新','001号']);
+    console.log(wangsicong);
+    console.log(wangsicong.car);//也可以得到得到父对象里的car属性值
+```
+
+
+
+
+
 
 #### 八.arguments关键字
 
