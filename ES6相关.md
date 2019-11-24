@@ -53,12 +53,12 @@ A(2,3);  //5
 
     1. 可以省略function关键字 
     2. 可以不写函数名
-    3. 如果只有一个表达式可以不需要写{} 和 返回值
+    3. 如果只有一个表达式可以不需要写{} 和 返回值,直接加一个()即可
 
 ```js
 
 //省略写法
-var people = name => 'hello' + name;
+var people = name => ('hello' + name);
  
 var getFullName = (firstName, lastName) => {
     var fullName = firstName + lastName;
