@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<script>
+ // 经典题目:下面会打印什么?
+for(var i=0;i<=5;i++){
+    setTimeout( ()=> {
+       console.log(i);
+    }, 100);
+}
+//这里会打印六个6,改为0,1,2...5的方法
+// 方法1,改成自执行函数,并将i传递过去,里面用function接收,其余函数体就照常了
+for(var i=0;i<=5;i++){
+    //这里可以访问到i
+    (function(j){//自执行函数里接收传递过来的i
+        setTimeout( ()=> {
+       console.log(j);
+    }, 100)
+    })(i)
+}
+// 方法2:定时器添加第三个参数并接收即可
+for(var i=0;i<=5;i++){
+    setTimeout( (j)=> {
+       console.log(j);
+    }, 100,i);
+}
+// 方法3:直接用let
+for(let i=0;i<=5;i++){
+    setTimeout( ()=> {
+       console.log(i);
+    }, 100);
+}
+</script>

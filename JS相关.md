@@ -474,7 +474,7 @@ d.最后,new会将有值的新对象进行返回;
     console.log(wangsicong.car);//也可以得到得到父对象里的car属性值
 ```
 
-
+4.class类的继承
 
 
 
@@ -485,3 +485,243 @@ d.最后,new会将有值的新对象进行返回;
 
 ![1574431043155](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1574431043155.png)
 
+#### 九.闭包
+
+定义:父函数A内部有一个子函数B,子函数B调用的时候可以访问到父函数A中的变量,而在全局里的其它人访问不到,那么子函数B就是闭包.
+
+```js
+function A() {
+    var a=1;
+    window.B=function(){
+        console.log(a);
+    }
+}
+A();//先执行一下,因为里面要创建里面内容,创建完后一直存在,不会回收
+B();//得到1
+```
+
+闭包的意义就是让我们可以间接的访问函数内部的变量;
+
+经典面试题:
+
+```js
+ // 经典题目:下面会打印什么?
+for(var i=0;i<=5;i++){
+    setTimeout( ()=> {
+       console.log(i);
+    }, 100);
+}
+//这里会打印六个6,改为0,1,2...5的方法:
+// 方法1,改成自执行函数,并将i传递过去,里面用function接收,其余函数体就照常(利用了闭包)
+for(var i=0;i<=5;i++){
+    //这里可以访问到i
+    (function(j){//自执行函数里接收传递过来的i
+        setTimeout( ()=> {
+       console.log(j);
+    }, 100)
+    })(i)
+}
+// 方法2:定时器添加第三个参数并接收即可
+for(var i=0;i<=5;i++){
+    setTimeout( (j)=> {
+       console.log(j);
+    }, 100,i);
+}
+// 方法3:直接用let
+for(let i=0;i<=5;i++){
+    setTimeout( ()=> {
+       console.log(i);
+    }, 100);
+}
+```
+闭包有两个作用:
+1.延长函数里面变量的生命周期;
+2.提供有限的访问权限;
+
+#### 十.递归
+ 就是函数内部调用自己,同时要有结束条件.
+ 递归应用:
+ ```js
+     //1.用递归求1-n之间的整数的累加和. n=5
+    //1+2+3+4+5   getSum(n)
+    //1+2+3+4  +5
+    //1+2+3    +4
+    //1+2      +3
+    //1        +2
+
+    //如果我们写了一个函数getSum就是用来求1-n之间的整数累加和的.
+    //那在求1-n之间累加和的时候, 要先求1- (n-1)之间的累加和,再加上n本身.
+    function getSum(n){
+      if(n == 1){
+        return 1;
+      }
+      return getSum(n-1) + n;
+    }
+    console.log(getSum(5));
+	//2.求斐波那契数列中第n位的数是多少.
+    //1 1 2 3 5 8 13 21 34.....
+    //如果我们写了一个函数getFB()就是用来求斐波那契数列中第n是多少的.
+    //要求n位是多少,要先求n-1位和n-2位是多少.
+    function getFB(n){
+      if(n==1 || n==2){
+        return 1;
+      }
+      return arguments.callee(n-1) + getFB(n-2)//arguments.callee就是getFB
+    }
+    console.log(getFB(10));
+    
+    //3.递归求页面上所有的元素.
+  var list = [];
+  function getHDeles(ele){
+    var children = ele.children;//元素集合,是arr,这是求出这个ele元素的所有子代.
+    for(var i = 0 ; i < children.length; i++){
+      var child = children[i]; //children[i]//得到每一个元素
+      list.push(child);//把元素的子代存进来.
+      //子代也要求子代.调用这个函数求子代
+      getHDeles(child);
+    }
+  }
+  //验证一下.
+  //求id为father下的所有元素
+  var father = document.getElementById("father");
+  getHDeles(father);
+  console.log(list);
+  //求页面上所有的元素.求dom树.
+  getHDeles(document);
+  // console.log(list);
+ ```
+
+####  十一.防抖和节流:
+
+防抖概念：任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。(意思就是这件事儿需要等待，如果你反复催促，我就重新计时！)
+应用场景有：搜索联想、input验证、resize
+
+```js
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>防抖</title>
+</head>
+<body>
+  <button id="debounce">点我防抖！</button>
+
+  <script>
+    window.onload = function() {
+      // 1、获取这个按钮，并绑定事件
+      var myDebounce = document.getElementById("debounce");
+      myDebounce.addEventListener("click", debounce(sayDebounce,2000));
+    }
+
+    // 2、防抖功能函数，接受传参
+    function debounce(fn,delay) {
+      // 4、创建一个标记用来存放定时器的返回值
+      let timeout = null;
+      return function() {
+        // 5、每次当用户点击/输入的时候，把前一个定时器清除(这里是重点)
+        clearTimeout(timeout);
+        // 6、然后创建一个新的 setTimeout，
+        // 这样就能保证点击按钮后的间隔内如果用户还点击了的话，就不会执行 fn 函数
+        timeout = setTimeout(() => {
+          fn.call(this, arguments);//这句话是调用fn,并把不确定的实参传过去
+        }, delay);//这里设置限定时间
+      };
+    }
+
+    // 3、需要进行防抖的事件处理
+    function sayDebounce() {
+      // ... 有些需要防抖的工作，在这里执行
+      console.log("防抖成功！");
+    }
+
+  </script>
+</body>
+</html>
+
+```
+效果:
+
+![img](https://user-gold-cdn.xitu.io/2019/3/12/169721dc213d832b?imageslim)
+
+
+
+
+
+
+
+节流概念:指定时间间隔内只会执行一次任务。
+
+应用场景有:scroll、touchmove
+
+```js
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>节流</title>
+</head>
+<body>
+
+  <button id="throttle">点我节流！</button>
+
+  <script>
+    window.onload = function() {
+      // 1、获取按钮，绑定点击事件
+      var myThrottle = document.getElementById("throttle");
+      myThrottle.addEventListener("click", throttle(sayThrottle,3000));
+    }
+
+    // 2、节流函数体
+    function throttle(fn,delay) {
+      // 4、通过闭包保存一个标记
+      let canRun = true;
+      return function() {
+        // 5、在函数开头判断标志是否为 true，不为 true 则中断函数(这里是重点)
+        if(!canRun) {
+          return;
+        }
+        // 6、将 canRun 设置为 false，防止执行之前再被执行
+        canRun = false;
+        // 7、定时器
+        setTimeout( () => {
+          fn.call(this, arguments);
+          // 8、执行完事件（比如调用完接口）之后，重新将这个标志设置为 true
+          canRun = true;
+        }, delay);
+      };
+    }
+
+    // 3、需要节流的事件
+    function sayThrottle() {
+      console.log("节流成功！");
+    }
+
+  </script>
+</body>
+</html>
+```
+
+效果:
+
+![img](https://user-gold-cdn.xitu.io/2019/3/12/169721de93ace1d0?imageslim)
+
+#### 十二.重绘与回流(也叫重排)
+重绘(repaint)：当元素样式的改变不影响布局时，浏览器将使用重绘对元素进行更新，此时由于只需要 UI 层面的重新像素绘制，因此损耗较少。
+重绘应用场景:改变元素颜色,改变元素背景色.....
+
+回流(reflow)：又叫重排（layout）。当元素的尺寸、结构或者触发某些属性时，浏览器会重新渲染页面，称为回流。此时，浏览器需要重新经过计算，计算后还需要重新页面布局，因此是较重的操作。
+回流应用场景:浏览器窗口大小改变,元素尺寸/位置/内容发生改变,元素字体大小变化,添加或者删除可见的 DOM 元素......
+
+总结:回流必定会触发重绘，重绘不一定会触发回流。重绘的开销较小，回流的代价较高。
+
+那么，在工作中我们要如何避免大量使用重绘与回流呢？：
+1.避免频繁操作样式，可汇总后统一一次修改
+2.尽量使用 class 进行样式修改，而不是直接操作样式
+3.减少 DOM 的操作，可使用字符串一次性插入
+
+
+####  十三.深浅拷贝

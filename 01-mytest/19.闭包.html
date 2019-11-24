@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+function A() {
+    var a=1;
+    window.B=function(){
+        console.log(a);
+    }
+}
+A();//先执行一下,因为里面要创建里面内容,创建完后一直存在,不会回收
+B();//得到1
+// console.log(a);
+
+</script>

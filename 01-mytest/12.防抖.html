@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>防抖</title>
 </head>
-
 <body>
-    <body>
-        <div style="height: 2000px;background-color: aqua;"></div>
-    </body>
+  <button id="debounce">点我防抖！</button>
+
+  <script>
+    window.onload = function() {
+      // 1、获取这个按钮，并绑定事件
+      var myDebounce = document.getElementById("debounce");
+      myDebounce.addEventListener("click", debounce(sayDebounce,2000));
+    }
+
+    // 2、防抖功能函数，接受传参
+    function debounce(fn,delay) {
+      // 4、创建一个标记用来存放定时器的返回值
+      let timeout = null;
+      return function() {
+        // 5、每次当用户点击/输入的时候，把前一个定时器清除(这个非常重要)
+        clearTimeout(timeout);
+        // 6、然后创建一个新的 setTimeout，
+        // 这样就能保证点击按钮后的间隔内如果用户还点击了的话，就不会执行 fn 函数
+        timeout = setTimeout(() => {
+          fn.call(this, arguments);//这句话是调用fn,并把不确定的实参传过去
+        }, delay);//这里设置限定时间
+      };
+    }
+
+    // 3、需要进行防抖的事件处理
+    function sayDebounce() {
+      // ... 有些需要防抖的工作，在这里执行
+      console.log("防抖成功！");
+    }
+
+  </script>
 </body>
-
 </html>
-<script>
-    // 防抖案例:在鼠标滚动事件中,不要让它一直发请求,而是设置一定的延迟,在延迟还在的时候,不执行任何操作,
-    window.onscroll = debounce(showTop,3000)//添加滚动
-
-    function debounce(fn, delay) {//准备好的防抖函数
-        let timer = null 
-        return function () {
-            if (timer) {
-                clearTimeout(timer)
-            }
-            timer = setTimeout(fn, delay) 
-        }
-    }
-    function showTop() {
-        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;　　
-        console.log('滚动条位置：' + scrollTop);
-    }
-</script>

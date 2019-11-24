@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>节流</title>
 </head>
 <body>
-    
-        <body>
-                <div style="height: 2000px;background-color: aqua;"></div>
-        </body>
+
+  <button id="throttle">点我节流！</button>
+
+  <script>
+    window.onload = function() {
+      // 1、获取按钮，绑定点击事件
+      var myThrottle = document.getElementById("throttle");
+      myThrottle.addEventListener("click", throttle(sayThrottle,3000));
+    }
+
+    // 2、节流函数体
+    function throttle(fn,delay) {
+      // 4、通过闭包保存一个标记
+      let canRun = true;
+      return function() {
+        // 5、在函数开头判断标志是否为 true，不为 true 则中断函数(这是重点)
+        if(!canRun) {
+          return;
+        }
+        // 6、将 canRun 设置为 false，防止执行之前再被执行
+        canRun = false;
+        // 7、定时器
+        setTimeout( () => {
+          fn.call(this, arguments);
+          // 8、执行完事件（比如调用完接口）之后，重新将这个标志设置为 true
+          canRun = true;
+        }, delay);
+      };
+    }
+
+    // 3、需要节流的事件
+    function sayThrottle() {
+      console.log("节流成功！");
+    }
+
+  </script>
 </body>
 </html>
-<script>
-    window.onscroll = throttle(showTop,3000) 
-    
-function throttle(fn,delay){
-    let valid = true
-    return function() {
-       if(!valid){
-           //休息时间 暂不接客
-           return false 
-       }
-       // 工作时间，执行函数并且在间隔期内把状态位设为无效
-        valid = false
-        setTimeout(() => {
-            fn()
-            valid = true;
-        }, delay)
-    }
-}
-/* 请注意，节流函数并不止上面这种实现方案,
-   例如可以完全不借助setTimeout，可以把状态位换成时间戳，然后利用时间戳差值是否大于指定间隔时间来做判定。
-   也可以直接将setTimeout的返回的标记当做判断条件-判断当前定时器是否存在，如果存在表示还在冷却，并且在执行fn之后消除定时器表示激活，原理都一样
-    */
-    // 以下照旧
-function showTop  () {
-    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-　　console.log('滚动条位置：' + scrollTop);
-}
-
-</script>
