@@ -8,7 +8,7 @@
 1. 新增声明命令let和const
 2. 模板字符串（Template String）
 3. 函数的扩展(默认参数和箭头函数)
-4. 对象扩展
+4. 对象扩展(属性和方法简写,Object.keys(对象)方法和Object.assign(target,obj1,obj2...)方法)
 5. import和export
 6. Promise
 7. 解构赋值

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // 父类
+    class Parent {
+        constructor(props) {
+            this.name = props;
+            this.house = {
+                price: 10000000,
+                adress: '洛杉矶'
+            };
+            this.car = {
+                price: 5000000,
+                brand: '劳斯莱斯幻影'
+            }
+        }
+        getValue() {
+            console.log("我是父类的方法");
+        }
+    }
+    //  子类
+    class Child extends Parent {
+        constructor(props) {
+            console.log(props);//就是传递过来的参数
+            super(props);
+            this.name = props;
+        }
+    }
+    let child = new Child("小明")
+    console.log(child.getValue()); //可以调用父类方法
+    console.log(child.car); //得到父亲的car
+</script>

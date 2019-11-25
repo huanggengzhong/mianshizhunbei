@@ -1,5 +1,5 @@
 #### 一.数据类型
-在javascript当中数据类型总共分为两类:基本类型和引用类型;基本类型是有6种分别是:null,undefined,boolean,number,string和symbol(es6新增,表示独一无二的值,具体可以看阮一峰的介绍);引用类型统称为Object对象,主要包括对象,数组和函数.
+在javascript当中数据类型总共分为两类:基本类型和引用类型;基本类型是有6种分别是:null,undefined,boolean,number,string和symbol(es6新增,表示独一无二的值,具体可以看阮一峰的介绍);引用类型统称为Object对象,主要包括对象,数组.
 
 基本类型和引用类型的区别:
 
@@ -474,7 +474,39 @@ d.最后,new会将有值的新对象进行返回;
     console.log(wangsicong.car);//也可以得到得到父对象里的car属性值
 ```
 
-4.class类的继承
+4.class类的继承:
+class类的继承的核心在于使用extends表明继承哪个类,并且在子类的构造函数中必须调用super()方法;
+
+```js
+    // 父类
+    class Parent {
+        constructor(props) {
+            this.name = props;
+            this.house = {
+                price: 10000000,
+                adress: '洛杉矶'
+            };
+            this.car = {
+                price: 5000000,
+                brand: '劳斯莱斯幻影'
+            }
+        }
+        getValue() {
+            console.log("我是父类的方法");
+        }
+    }
+    //  子类
+    class Child extends Parent {
+        constructor(props) {
+            console.log(props);//就是传递过来的参数
+            super(props);
+            this.name = props;
+        }
+    }
+    let child = new Child("小明")
+    console.log(child.getValue()); //可以调用父类方法
+    console.log(child.car); //得到父亲的car
+```
 
 
 
@@ -724,4 +756,140 @@ for(let i=0;i<=5;i++){
 3.减少 DOM 的操作，可使用字符串一次性插入
 
 
-####  十三.深浅拷贝
+####  十三.浅深拷贝
+我们知道对象是引用类型,假设有一个对象A和对象B,将对象A的值赋值给对象B,当你改了任意一个对象的值时,另一个对象的值都会一起变,而我们实际开发过程中也经常会遇到:后端小伙伴需要我将 接口返回的源数据和页面修改后新数据各发一份给它.这就需要用到对象的拷贝了.
+
+1.浅拷贝:只拷贝对象的第一层就叫浅拷贝.
+ 浅拷贝方法:自己写函数,assign,concat,slice,扩展运算符方法这五种
+ a.自己写浅拷贝
+
+ ```js
+     const obj1 = {
+        name: "小明",
+        hobby: ["吃饭", "睡觉"]
+
+    };
+
+    function shallowClone(obj) {
+        const obj2 = {};
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                obj2[key] = obj1[key];
+            }
+          
+        }
+        return obj2;
+
+    }
+    const obj2=shallowClone(obj1);
+    obj2.name="小张"
+   console.log(obj2);//得到一个新的对象
+   console.log(obj1);
+   js
+ ```
+ b.利用Object.assign()方法
+ ```js
+ const obj1 = {
+  username: 'LiangJunrong',
+  skill: {
+    play: ['basketball', 'computer game'],
+    read: 'book',
+  },
+  girlfriend: ['1 号备胎', '2 号备胎', '3 号备胎'],
+};
+const obj2 = Object.assign({}, obj1);
+
+console.log(obj2)
+ ```
+c.利用数组的concat()链接方法
+concat方法不会改变原有数组,而是返回一个新数组.
+```js
+const arr1 = [
+  1,
+  {
+    username: 'jsliang',
+  },
+];
+
+let arr2 = arr1.concat();
+console.log(arr2)
+```
+d.使用数组的slice()截取方法
+slice() 方法原数组不会改变,而是返回一个新的数组对象，这一对象是一个由 begin 和 end 决定的原数组的浅拷贝..
+```js
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+console.log(animals.slice(2, 4));
+// expected output: Array ["camel", "duck"]
+```
+e.利用...展开运算符
+```js
+   const obj1 = {
+        name: "小明",
+        hobby: ["吃饭", "睡觉"]
+
+    };
+    const obj2 = { ...obj1}
+    console.log(obj2); //得到一个新的对象
+    console.log(obj1);
+```
+上面都只能拷贝一层,如果要拷贝对象两层或者以上,就要用深拷贝了
+深拷贝的方法:
+a.使用JSON.parse(JSON.stringyfy(oldObj))方法
+```js
+const arr1 = [
+  1,
+  {
+    username: 'jsliang',
+  },
+];
+
+let arr2 = JSON.parse(JSON.stringify(arr1));
+```
+该方法的局限性：
+1、不能存放函数或者 Undefined，否则会丢失函数或者 Undefined；
+2、不要存放时间对象，否则会变成字符串形式；
+3、不能存放 RegExp、Error 对象，否则会变成空对象；
+4、不能存放 NaN、Infinity、-Infinity，否则会变成 null；
+5、……更多请自行填坑，具体来说就是 JavaScript 和 JSON 存在差异，两者不兼容的就会出问题。
+
+
+b.使用第三方库Lodast中的_cloneDeep(oldObj)方法;
+```js
+var _ = require('lodash');
+
+const obj1 = [
+  1,
+  'Hello!',
+  { name: 'js1' },
+  [
+    {
+      name: 'js2',
+    }
+  ],
+]
+const obj2 = _.cloneDeep(obj1);
+```
+c.jQuery的extend()方法
+```js
+      const obj1 = [
+        1,
+        'Hello!',
+        { name: 'js1' },
+        [
+          {
+            name: 'js2',
+          }
+        ],
+      ]
+      const obj2 = {};
+      /**
+       * @name jQuery深拷贝
+       * @description $.extend(deep, target, object1, object2...)
+       * @param {Boolean} deep 可选 true 或者 false，默认是 false，所以一般如果需要填写，最好是 true。
+       * @param {Object} target 需要存放的位置
+       * @param {Object} object 可以有 n 个原数据
+       */
+      $.extend(true, obj2, obj1);
+
+```
