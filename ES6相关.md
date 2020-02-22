@@ -2,28 +2,136 @@
 
 ## ES6相关 
 
-### 1.es6熟悉吗，说几个es6的新增的一些东西
+### es6的新增的一些东西
+
+### 一. let const的增加
+
+#### 1.let
+
+ES6中新增了用于声明变量的关键字
+
+##### a.具有块级作用域
+
+```javascript
+ if (true) { 
+     let a = 10;
+ }
+console.log(a) // a is not defined
+```
+
+**注意：**使用let关键字声明的变量才具有块级作用域，使用var声明的变量不具备块级作用域特性。
+
+##### b.不存在变量提升
+
+```javascript
+console.log(a); // a is not defined 
+let a = 20;
+```
+
+##### c.暂时性死区
+
+利用let声明的变量会绑定在这个块级作用域，不会受外界的影响
+
+```javascript
+  var tmp = 123;
+  if (true) {
+    let tmp;
+    tmp = 'abc';
+    console.log(tmp); //abc
+
+  }
+  console.log(tmp); //123
+```
+
+##### 经典面试题
+
+```javascript
+ var arr = [];
+ for (var i = 0; i < 2; i++) {
+     arr[i] = function () {
+         console.log(i); 
+     }
+ }
+ arr[0]();
+ arr[1]();
+
+```
+
+![1582384470998](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1582384470998.png)
+
+**经典面试题图解：**此题的关键点在于变量i是全局的，函数执行时输出的都是全局作用域下的i值。
+
+```javascript
+ let arr = [];
+ for (let i = 0; i < 2; i++) {
+     arr[i] = function () {
+         console.log(i); 
+     }
+ }
+ arr[0]();
+ arr[1]();
+
+```
+
+![1582384500724](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1582384500724.png)
+
+**经典面试题图解：**此题的关键点在于每次循环都会产生一个块级作用域，每个块级作用域中的变量都是不同的，函数执行时输出的是自己上一级（循环产生的块级作用域）作用域下的i值.
+
+#### 2.const
+
+声明常量，常量就是值（内存地址）不能变化的量
+
+##### a.具有块级作用域
+
+```javascript
+ if (true) { 
+     const a = 10;
+ }
+console.log(a) // a is not defined
+```
+
+##### a.声明常量时必须赋值
+
+```javascript
+const PI; // Missing initializer in const declaration
+```
+
+##### c.赋值后，值就不能修改
+
+```javascript
+const PI = 3.14;
+PI = 100; // Assignment to constant variable.
+
+const ary = [100, 200];
+ary[0] = 'a';
+ary[1] = 'b';
+console.log(ary); // ['a', 'b']; 
+ary = ['a', 'b']; // Assignment to constant variable.
+```
+
+#### 小结
+
+- const声明的变量是一个常量
+
+- 既然是常量不能重新进行赋值，如果是基本数据类型，不能更改值，如果是复杂数据类型，不能更改地址值(里面的值可以修改,但整个对象或数组不能重新赋值).
+
+- 声明 const时候必须要给定值.
 
 
-1. 新增声明命令let和const
-2. 模板字符串（Template String）
-3. 函数的扩展(默认参数和箭头函数)
-4. 对象扩展(属性和方法简写,Object.keys(对象)方法和Object.assign(target,obj1,obj2...)方法)
-5. import和export
-6. Promise
-7. 解构赋值
-8. 展开运算符(...运算符)
+#### let、const、var 的区别
 
-### 2. let count的详解
+- 使用 var 声明的变量，其作用域为该语句所在的函数内，且存在变量提升现象
 
-1. let 和 const 都是块级作用域。以{}代码块作为作用域范围 只能在代码块里面使用。
-2. 不存在变量提升，只能先声明再使用，否则会报错。在代码块内，在声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。
-3. 在同一个代码块内，不允许重复声明。
-4. const声明的是一个只读常量，在声明时就需要赋值。（如果 const 的是一个对象，对象所包含的值是可以被修改的。抽象一点儿说，就是对象所指向的地址不能改变，而变量成员是可以修改的。）
+- 使用 let 声明的变量，其作用域为该语句所在的代码块内，不存在变量提升
 
-### 3. 模板字符串详解
+- 使用 const 声明的是常量，在后面出现的代码中不能再修改该常量的值
 
-用一对反引号(`)标识，它可以当作普通字符串使用，也可以用来定义多行字符串，也可以在字符串中嵌入变量，js表达式或函数，变量、js表达式或函数需要写在${ }中
+  ![1582384980805](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1582384980805.png)
+### 二.字符串的扩展
+
+####  1.模板字符串
+
+模板字符串可以解析变量,换行,调用函数
 
 ```js
 var str = `abc
@@ -37,9 +145,118 @@ function a() {
 console.log(`我的名字叫做${name}，年龄${17+2}岁，性别${'男'}，游戏ID：${a()}`);
 ```
 
-### 4. 函数的扩展详解
+#### 2.字符串startsWith() 和 endsWith()方法
 
-1. 可以给函数参数设置默认值
+是否在原字符的头部/尾部,返回布尔值
+
+```js
+let str = 'Hello world!';
+str.startsWith('Hello') // true 
+str.endsWith('!')       // true
+```
+
+#### 3.字符串repeat()方法
+
+repeat()改变原字符串重复n次，返回一个新字符串
+
+```js
+'x'.repeat(3)      // "xxx" 
+'hello'.repeat(2)  // "hellohello"
+```
+
+### 三. 展开运算符(...运算符)
+
+1. 将字符串转成数组
+```js
+var str="abcd";
+console.log([...str]) // ["a", "b", "c", "d"]
+```
+2. 两个数组的合并
+```js
+var a1=[1,2,3];
+var a2=[4,5,6];
+console.log([...a1,...a2]); //[1, 2, 3, 4, 5, 6]
+```
+3.对象的合并
+
+```js
+let obj = { a: 1, b: 2 };
+let obj2 = { ...obj, c: 3 }; // { a:1, b:2, c:3 }
+let obj3 = { ...obj, a: 3 }; // { a:3, b:2 }//如果重复的会覆盖
+```
+4. 将集合转成数组
+```js
+var sets=new Set([1,2,3,4,5]) //解释Set对象是值的集合,它是js的内置对象
+console.log([...sets]) // [1, 2, 3, 4, 5]
+```
+5. 在函数的参数中使用，用来代替arguments参数
+```js
+function func(...args){
+    console.log(args);//[1, 2, 3, 4]
+    console.log(arguments)//Arguments[1, 2, 3, 4]
+}
+func(1, 2, 3, 4);
+ 
+function f(x, ...y) {
+    console.log(x);
+    console.log(y);
+}
+f('a', 'b', 'c');     //a 和 ["b","c"]
+f('a')                //a 和 []
+f()                   //undefined 
+```
+
+### 四. 函数的扩展
+
+#### 箭头函数(重要)
+
+1. 可以省略function关键字 
+2. 可以不写函数名
+3. 如果只有一个表达式可以不需要写{} 和 返回值,直接加一个()即可
+
+```js
+
+ //普通写法
+var getFullName = (firstName, lastName) => {
+    return firstName + lastName;
+}
+//es6写法
+var getFullName = (firstName, lastName) => (firstName + lastName);
+
+```
+
+4.箭头函数中不绑定this，可以简单理解成，定义箭头函数中的作用域的this指向谁，它就指向谁.
+
+```js
+const obj = { name: '张三'} 
+ function fn () { 
+     console.log(this);//this 指向 是obj对象
+     return () => { 
+         console.log(this);//this 指向 的是箭头函数定义的位置，那么这个箭头函数定义在fn里面，而这个fn指向是的obj对象，所以这个this也指向是obj对象
+     } 
+ } 
+ const resFn = fn.call(obj); 
+ resFn();
+```
+
+箭头函数面试题
+
+```javascript
+  var age = 100;
+  var obj = {
+    age: 20,
+    say: () => {
+      console.log(this) //window,对象是没有作用域的,所以this指向最近的函数上下文对象,最近的是window
+    },
+    say2() {
+      console.log(this); //obj
+    }
+  }
+  obj.say();
+  obj.say2();
+```
+
+#### 函数参数给默认值
 
 ```js
 function A(a,b=1){
@@ -49,33 +266,170 @@ A(1);    //2
 A(2,3);  //5
 ```
 
-2. 箭头函数
+#### 
 
-    1. 可以省略function关键字 
-    2. 可以不写函数名
-    3. 如果只有一个表达式可以不需要写{} 和 返回值,直接加一个()即可
+#### 函数的三个点参数
 
-```js
+##### 函数剩余参数语法
+允许我们将一个不定数量的参数表示为一个数组，不定参数定义方式，这种方式很方便的去声明不知道参数情况下的一个函数
 
-//省略写法
-var people = name => ('hello' + name);
- 
-var getFullName = (firstName, lastName) => {
-    var fullName = firstName + lastName;
-    return fullName;
-}
+```javascript
+function sum (first, ...args) {
+     console.log(first); // 10
+     console.log(args); // [20, 30] 
+ }
+ sum(10, 20, 30)
 
 ```
 
-### 5. 对象的扩展详解
+三个点也可以用在数组解构里
 
-1. 属性的简写。ES6 允许在对象之中，直接写变量,这时，属性名为变量名, 属性值为变量的值.
+```javascript
+let students = ['wangwu', 'zhangsan', 'lisi'];
+let [s1, ...s2] = students; 
+console.log(s1);  // 'wangwu' 
+console.log(s2);  // ['zhangsan', 'lisi']
+
+```
+
+### 五.数组和对象的解构赋值
+
+ES6 允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构（Destructuring）
+
+#### 数组的解构赋值
+
+数组的元素是按次序排列的，变量的取值由它的位置决定, 如果有对应不上的就是undefined
+
+```js
+var [name, pwd, sex]=["小周", "123456", "男"];
+console.log(name) //小周
+console.log(pwd)//123456
+console.log(sex)//男
+```
+
+#### 对象的解构赋值
+
+对象的解构赋值多了一项可以起别名.
+
+```js
+var obj={name:"小周", pwd:"123456", sex:"男"}
+var {name, pwd, sex}=obj;
+console.log(name) //小周
+console.log(pwd)//123456
+console.log(sex)//男
+
+//别名
+let { foo: foz, bar: baz } = { foo: "aaa", bar: "bbb" };
+console.log(foz) // "aaa"
+console.log(foo) // error: foo is not defined
+```
+
+
+
+### 六.数组的扩展
+
+#### 展开语法
+
+```js
+ let ary = [1, 2, 3];
+ ...ary  // 1, 2, 3
+ console.log(...ary);    // 1 2 3,相当于下面的代码
+ console.log(1,2,3);//1,2,3
+```
+
+#### 展开语法应用
+2.1快速合并数组
+
+```js
+// 合并方法一:直接用扩展运算符组成 
+ let ary1 = [1, 2, 3];
+ let ary2 = [3, 4, 5];
+ let newArr = [...ary1, ...ary2];//newArr是[1,2,3,3,4,5]
+ // 合并方法二: 用扩展运算符push
+ ary1.push(...ary2);//ary1是[1,2,3,3,4,5],push方法返回的是新数组的长度
+```
+ 2.2将HTML集合转换数组
+```JS
+    let oDivs = document.getElementsByTagName('div'); 
+    oDivs = [...oDivs];
+```
+
+![1582388064280](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1582388064280.png)
+
+#### 静态方法:Array.from()
+
+可以将伪数组对象转换为真正的数组;
+
+```
+//定义一个集合
+let arrayLike = {
+    '0': 'a',
+    '1': 'b',
+    '2': 'c',
+    length: 3
+}; 
+//转成数组
+let arr2 = Array.from(arrayLike); // ['a', 'b', 'c']
+```
+
+改方法还可以接受第二个参数(是一个函数)，作用类似于数组的map方法，用来对每个元素进行处理，将处理后的值放入返回的数组.
+
+```
+ let arrayLike = { 
+     "0": 1,
+     "1": 2,
+     "length": 2
+ }
+ let newAry = Array.from(arrayLike, item => item *2)//[2,4]
+```
+
+#### 实例方法：find()
+
+用于找出第一个符合条件的数组成员，如果没有找到返回undefined
+
+```javascript
+let ary = [{
+     id: 1,
+     name: '张三'
+ }, { 
+     id: 2,
+     name: '李四'
+ }]; 
+ let target = ary.find((item, index) => item.id == 2);//找数组里面符合条件的值，当数组中元素id等于2的查找出来，注意，只会匹配第一个
+
+```
+
+#### 实例方法：findIndex()
+
+用于找出第一个符合条件的数组成员的位置，如果没有找到返回-1
+
+```javascript
+let ary = [1, 5, 10, 15];
+let index = ary.findIndex((value, index) => value > 9); 
+console.log(index); // 2
+```
+
+#### 实例方法：includes()
+
+判断某个数组是否包含给定的值，返回布尔值。
+
+```javascript
+[1, 2, 3].includes(2) // true 
+[1, 2, 3].includes(4) // false
+
+```
+
+
+### 七. 对象的扩展详解
+
+#### 属性和方法简写。
+属性简写
 ```js
 const foo = 'bar';
 const baz = {foo};//简写
 const baz = {foo: foo};// 等同于这个
 ```
-2. 方法简写。
+##### 方法简写
 
 ```js
 
@@ -92,7 +446,8 @@ var o = {
   }
 };
 ```
-3. Object.keys()方法，获取对象的所有属性名或方法名（不包括原形的内容），返回一个数组
+#####  #### Object.keys()方法
+获取对象的所有属性名或方法名（不包括原形的内容），返回一个数组
 
 ```js
 //直接传入对象,返回属性名数组
@@ -111,7 +466,8 @@ console.log(Object.keys("abcdef"));    //["0", "1", "2", "3", "4", "5"]
 
 ```
 
-4. Object.assign ()，assign方法将多个原对象的属性和方法都合并到了目标对象上面。可以接收多个参数，第一个参数是目标对象，后面的都是源对象
+#####  #### Object.assign ()
+Object.assign()方法将多个原对象的属性和方法都合并到了第一个目标对象上面。可以接收多个参数，第一个参数是目标对象，后面的都是源对象
 
 ```js
 
@@ -124,13 +480,12 @@ Object.assign(target,source1,source2,source3);
 console.log(target);    //{name : 'ming', age: '19', sex: '男'}
 ```
 
-### 6. import和export模块化引包和导出详解
+### 八. import和export模块化引包和导出详解
 
 1. import导入模块;
-
 2. export用于导出模块;
-
-3. import和export命令只能在模块的顶部，不能在代码块之中
+3. import和export命令只能在模块的顶部，不能在代码块之中;
+4. 用as起别名,*全导和大括号部分导入;
 
 ```js
 //导入部分:
@@ -150,7 +505,51 @@ export default App
 export class User extends Component{};
 ```
 
-### 7. Promise对象异步对象
+### 八.Set 数据结构（★★）
+
+ES6 提供了新的数据结构  Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。
+
+Set本身是一个构造函数，用来生成  Set  数据结构
+
+```javascript
+const s = new Set();
+```
+
+Set函数可以接受一个数组作为参数，可以快速去重。
+
+```javascript
+const set = new Set([1, 2, 3, 4, 4]);//{1, 2, 3, 4}
+
+```
+
+#### 实例方法
+
+- add(value)：添加某个值，返回 Set 结构本身
+- delete(value)：删除某个值，返回一个布尔值，表示删除是否成功
+- has(value)：返回一个布尔值，表示该值是否为 Set 的成员
+- clear()：清除所有成员，没有返回值
+
+```javascript
+ const s = new Set();
+ s.add(1).add(2).add(3); // 向 set 结构中添加值 
+ s.delete(2)             // 删除 set 结构中的2值   
+ s.has(1)                // 表示 set 结构中是否有1这个值 返回布尔值 
+ s.clear()               // 清除 set 结构中的所有值
+ //注意：删除的是元素的值，不是代表的索引
+```
+
+#### 遍历
+
+Set 结构的实例与数组一样，也拥有forEach方法，用于对每个成员执行某种操作，没有返回值。
+
+```javascript
+s.forEach(value => console.log(value))
+
+```
+
+
+
+### 十. Promise对象异步对象
 
 1. Promise的概念和作用： Promise是异步编程的一种解决方案，将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数
 
@@ -190,24 +589,27 @@ pro.then(function(res){
 
 ![1574499141298](C:\Users\91583\AppData\Roaming\Typora\typora-user-images\1574499141298.png)
 
-#### 关于Promise的问题一览
 
-什么是Promise?
-传统的回调式异步操作有什么缺点？（Promise是如何解决异步操作）
-Promise中的异步模式有哪些？有什么区别？
-如果向Promise.all()和Promise.race()传递空数组，运行结果会有什么不同？
-如何确保一个变量是可信任的Promise（Promise.resolve方法传入不同值的不同处理有哪些）
-Promise是如何捕获异常的？与传统的try/catch相比有什么优势？
-
-
-##### 解答如下：
 
 ##### 什么是Promise？
 下面的回答很像在背概念，但是很精辟
 
 所谓Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件的结果。从语法上说，Promise 是一个对象，从它可以获取异步操作的消息。Promise 提供统一的 API，各种异步操作都可以用同样的方法进行处理，让开发者不用再关注于时序和底层的结果。Promise的状态具有不受外界影响和不可逆两个特点。
 
-
+##### Promise是同步的还是异步的？
+是同步.下面代码说明
+```js
+  console.log(1)
+  let a = new Promise((res, rej) => {
+    console.log(2);
+  });
+  console.log(3);
+  let b = new Promise((res, rej) => {
+    console.log(4);
+  });
+  console.log(5);
+  //上面依次输出12345
+```
 
 ##### 传统的回调式异步操作有什么缺点？（Promise是如何解决异步操作）
 传统的回调有五大信任问题：
@@ -287,78 +689,5 @@ try {
 
 
 
-### 8. 解构赋值详解
-
-ES6 允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构（Destructuring）
-
-1. 数组的解构赋值
-    数组的元素是按次序排列的，变量的取值由它的位置决定, 如果有对应不上的就是undefined
-
-    ```js
-    
-    var [name, pwd, sex]=["小周", "123456", "男"];
-    console.log(name) //小周
-    console.log(pwd)//123456
-    console.log(sex)//男
-    ```
-
-2. 对象的解构赋值
-    对象的解构与数组有一个重要的不同,就是对象的属性没有次序，变量必须与属性同名，才能取到正确的值.
-
-    对象的解构赋值可以起别名.
-
-    ```js
-    
-    var obj={name:"小周", pwd:"123456", sex:"男"}
-    var {name, pwd, sex}=obj;
-    console.log(name) //小周
-    console.log(pwd)//123456
-    console.log(sex)//男
-    
-    //如果想要变量名和属性名不同，要写成这样
-    let { foo: foz, bar: baz } = { foo: "aaa", bar: "bbb" };
-    console.log(foz) // "aaa"
-    console.log(foo) // error: foo is not defined
-    ```
 
 
-### 9. 展开运算符(...运算符)
-
-1. 将字符串转成数组
-```js
-var str="abcd";
-console.log([...str]) // ["a", "b", "c", "d"]
-```
-2. 两个数组的合并
-```js
-var a1=[1,2,3];
-var a2=[4,5,6];
-console.log([...a1,...a2]); //[1, 2, 3, 4, 5, 6]
-```
-3.对象的合并
-```js
-let obj = { a: 1, b: 2 };
-let obj2 = { ...obj, c: 3 }; // { a:1, b:2, c:3 }
-let obj3 = { ...obj, a: 3 }; // { a:3, b:2 }//如果重复的会覆盖
-```
-4. 将集合转成数组
-```js
-var sets=new Set([1,2,3,4,5]) //解释Set对象是值的集合,它是js的内置对象
-console.log([...sets]) // [1, 2, 3, 4, 5]
-```
-5. 在函数的参数中使用，用来代替arguments参数
-```js
-function func(...args){
-    console.log(args);//[1, 2, 3, 4]
-    console.log(arguments)//Arguments[1, 2, 3, 4]
-}
-func(1, 2, 3, 4);
- 
-function f(x, ...y) {
-    console.log(x);
-    console.log(y);
-}
-f('a', 'b', 'c');     //a 和 ["b","c"]
-f('a')                //a 和 []
-f()                   //undefined 
-```
