@@ -410,7 +410,7 @@ let ary = [{
      name: '李四'
  }]; 
  let target = ary.find((item, index) => item.id == 2);//找数组里面符合条件的值，当数组中元素id等于2的查找出来，注意，只会匹配第一个
-
+ console.log(target);//{id: 2, name: "李四"}
 ```
 
 #### 实例方法：findIndex()
