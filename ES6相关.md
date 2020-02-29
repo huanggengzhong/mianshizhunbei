@@ -358,7 +358,7 @@ console.log(foo) // error: foo is not defined
 
 #### 静态方法:Array.from()
 
-#### Array.from()方法用于将伪数组,nodelist对象和arguments对象,都转为真正的数组.
+##### Array.from()方法用于将伪数组,nodelist对象和arguments对象,都转为真正的数组.
 将伪数组转为真数组
 ```js
 let arrayLike = {
@@ -387,7 +387,7 @@ function foo() {
 }
 foo(1,2,3)
 ```
-还可以接受第二个参数(函数),用来处理里面的值.
+##### 还可以接受第二个参数(函数),用来处理里面的值.
 ```js
 let arrayLike = { 
      "0": 1,
