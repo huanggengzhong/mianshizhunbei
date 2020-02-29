@@ -358,30 +358,44 @@ console.log(foo) // error: foo is not defined
 
 #### 静态方法:Array.from()
 
-可以将伪数组对象转换为真正的数组;
-
-```
-//定义一个集合
+#### Array.from()方法用于将伪数组,nodelist对象和arguments对象,都转为真正的数组.
+将伪数组转为真数组
+```js
 let arrayLike = {
     '0': 'a',
     '1': 'b',
     '2': 'c',
     length: 3
-}; 
-//转成数组
+};
+
 let arr2 = Array.from(arrayLike); // ['a', 'b', 'c']
 ```
-
-改方法还可以接受第二个参数(是一个函数)，作用类似于数组的map方法，用来对每个元素进行处理，将处理后的值放入返回的数组.
-
+NodeList对象转为真数组
+```js
+let divList = document.querySelectorAll('div');
+console.log(divList);//NodeList(3) [div, div, div]
+console.log(Array.from(divList));//[div, div, div]
 ```
- let arrayLike = { 
+arguments对象转为真数组
+```js
+function foo() {
+  console.log(arguments);
+  //Arguments(3) [1, 2, 3, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+  var args = Array.from(arguments);
+  console.log(args);//[1, 2, 3]
+  // ...do something...
+}
+foo(1,2,3)
+```
+还可以接受第二个参数(函数),用来处理里面的值.
+```js
+let arrayLike = { 
      "0": 1,
      "1": 2,
      "length": 2
  }
  let newAry = Array.from(arrayLike, item => item *2)//[2,4]
-```
+ ```
 
 #### 实例方法：find()
 
