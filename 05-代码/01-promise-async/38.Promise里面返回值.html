@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    new Promise(resolve=>{
+        setTimeout(()=>{
+            resolve("第一步");
+        },100)
+    }).then(res=>{
+        //res:第一步
+
+        return 100;
+    }).then(res=>{
+        console.log(res);//没有返回promise对象,这里直接打印100
+    })
+</script>
+</html>

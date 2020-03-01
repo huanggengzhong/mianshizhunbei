@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 需求，先执行完毕异步say方法，再执行异步run方法
+    // 方法一:
+    function q1() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve("异步1");
+            }, 1000)
+        })
+    }
+
+    function q2() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve("异步2");
+            }, 1000)
+        })
+    }
+
+    // (async function(){
+    //     console.log("第一次开始")
+    //     const res = await q1();
+    //     console.log("第一次：",res); 
+
+    //     console.log("第二次开始")
+    //     const res2=await q2();
+    //     console.log("第二次：",res2);
+
+    // })()
+
+    /* 可以直接改用await q()去调用,而不用自执行函数吗?
+       答: 这样不行的，因为await必须是在async函数内部的,如果使用await q()就相当于不是把await写在async里面了 */
+
+    //    可以改成这样(推荐)
+    const fn = async ()=> {
+        console.log("第一次开始")
+        const res = await q1();
+        console.log("第一次：", res);
+        console.log("第二次开始")
+        const res2 = await q2();
+        console.log("第二次：", res2);
+    }
+    fn()
+
+    //方法二:(推荐)
+/*         function q1(){
+            return new Promise((resolve)=>{
+                setTimeout(()=>{
+                    resolve("你好,异步1");
+                },1000)
+            })
+        }
+        function q2(){
+            return new Promise((resolve)=>{
+                setTimeout(()=>{
+                    resolve("你好,异步2");
+                },1000)
+            })
+        }
+        var o1={
+            say:async ()=>{
+                console.log('say方法：');
+
+                const res = await q1();
+
+                console.log(res);
+            },
+            run:async function(){
+                console.log('run方法:');
+
+                const res = await q2();
+
+                console.log(res);
+            }
+        }
+        // o1.say()
+        // o1.run()
+        //这种调用不是依次,打印:say方法,run方法,你好,异步1,你好,异步2
+
+        // 正确的姿势:
+        var fn=async function(){
+            await o1.say();
+            await o1.run();
+        }
+        fn();//正确打印:say方法,你好,异步1,run方法,你好,异步2  */
+</script>
+
+</html>
